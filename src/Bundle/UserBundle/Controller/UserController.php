@@ -103,7 +103,7 @@ class UserController extends Controller
      * @JMS\Secure(roles="ROLE_SUPER_ADMIN")
      */
     public function editProfileAction(Request $request){
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         $form = $this->createForm(new UserEditFormType(), $user);
 
         if ('POST' === $request->getMethod()) {
