@@ -21,8 +21,8 @@ class UserController extends Controller
     /**
      * @return object
      */
-    protected function getDoctrineManager($repository){
-        return $this->getDoctrine()->getManager()->getRepository($repository);
+    protected function getDoctrineManager(){
+        return $this->getDoctrine()->getManager()->getRepository("UserBundle:User");
     }
 
     /**
@@ -38,7 +38,7 @@ class UserController extends Controller
      * @JMS\Secure(roles="ROLE_SUPER_ADMIN")
      */
     public function indexAction(){
-        return array('users' => $this->getDoctrineManager("UserBundle:User")->findAll());
+        return array('users' => $this->getDoctrineManager()->findAll());
     }
 
     /**
@@ -68,7 +68,7 @@ class UserController extends Controller
     public function enableAction(User $user){
         $user->isEnabled() ? $user->setEnabled(false) AND $this->getSuccessMsg("User Successfully Disabled.") :
             $user->setEnabled(true) AND $this->getSuccessMsg("User Successfully Enabled.");
-        $this->getDoctrineManager("UserBundle:User")->update($user);
+        $this->getDoctrineManager()->update($user);
 
         return $this->redirect($this->generateUrl('user_list'));
     }
@@ -88,7 +88,7 @@ class UserController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->getDoctrineManager("UserBundle:User")->create($user);
+                $this->getDoctrineManager()->create($user);
                 $this->getSuccessMsg("User Successfully Created.");
                 return $this->redirect($this->generateUrl('user_list'));
             }
@@ -110,7 +110,7 @@ class UserController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->getDoctrineManager("UserBundle:User")->update($user);
+                $this->getDoctrineManager()->update($user);
                 $this->getSuccessMsg("User Successfully Updated.");
 
                 return $this->redirect($this->generateUrl('user_list'));
@@ -133,7 +133,7 @@ class UserController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->getDoctrineManager("UserBundle:User")->update($user);
+                $this->getDoctrineManager()->update($user);
                 $this->getSuccessMsg("User Successfully Updated.");
 
                 return $this->redirect($this->generateUrl('user_list'));
@@ -148,7 +148,7 @@ class UserController extends Controller
      * @JMS\Secure(roles="ROLE_SUPER_ADMIN")
      */
     public function deleteAction(User $user){
-        $this->getDoctrineManager("UserBundle:User")->delete($user);
+        $this->getDoctrineManager()->delete($user);
         $this->getSuccessMsg("User Successfully Deleted.");
 
         return $this->redirect($this->generateUrl('user_list'));

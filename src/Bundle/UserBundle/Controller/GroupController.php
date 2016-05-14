@@ -28,8 +28,8 @@ class GroupController extends Controller
     /**
      * @return object
      */
-    protected function getDoctrineManager($repository){
-        return $this->getDoctrine()->getManager()->getRepository($repository);
+    protected function getDoctrineManager(){
+        return $this->getDoctrine()->getManager()->getRepository("UserBundle:Group");
     }
 
     /**
@@ -45,7 +45,7 @@ class GroupController extends Controller
      * @JMS\Secure(roles="ROLE_SUPER_ADMIN")
      */
     public function indexAction(){
-        return array('groups' => $this->getDoctrineManager("UserBundle:Group")->findAll());
+        return array('groups' => $this->getDoctrineManager()->findAll());
     }
 
     /**
@@ -59,7 +59,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group/add", name="group_add")
+     * @Route("/group/add", name="fos_user_group_new")
      * @Template("UserBundle:Group:new.html.twig")
      * @param Request $request
      * @JMS\Secure(roles="ROLE_SUPER_ADMIN")
@@ -75,7 +75,7 @@ class GroupController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->getDoctrineManager("UserBundle:Group")->create($group);
+                $this->getDoctrineManager()->create($group);
                 $this->getSuccessMsg("Group Add Successfully.");
 
                 return $this->redirect($this->generateUrl('fos_user_group_list'));
@@ -85,7 +85,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group/edit/{id}", name="group_edit")
+     * @Route("/group/edit/{id}", name="fos_user_group_edit")
      * @Template("UserBundle:Group:edit.html.twig")
      * @param Request $request
      * @param Group $group
@@ -98,7 +98,7 @@ class GroupController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->getDoctrineManager("UserBundle:Group")->update($group);
+                $this->getDoctrineManager()->update($group);
                 $this->getSuccessMsg("Group Updated Successfully.");
                 return $this->redirect($this->generateUrl('fos_user_group_list'));
             }
